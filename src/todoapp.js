@@ -41,7 +41,7 @@ let tareas = [];
                         <td>
                             <input type="checkbox" data-id-tarea="${index}" id="terminarTarea" name="terminarTarea${index}">
                             <button class="btn btn-danger" data-id-tarea="${index}" id="eliminarTarea">Eliminar</button>
-                            <button class="btn btn-warning" data-id-tarea="${index}">Editar</button>
+                            <button class="btn btn-warning" data-id-tarea="${index}" id="editarTarea">Editar</button>
                         </td>
                     </tr>
                 
@@ -92,8 +92,28 @@ let tareas = [];
             <div class="row">
                 <div class="col-sm-12 text-center">
                     <form>
-                        <input type="text" class="form-control" placeholder="Nombre de la tarea" id="inputNuevaTarea" autofocused>
+                        <input type="text" class="form-control" placeholder="Nombre de la tarea" id="inputNuevaTarea">
                         <button class="btn btn-success" id="crearNuevaTarea">Añadir tarea</button>
+                    </form>
+                </div>
+            </div>
+
+        `;
+
+        return contenido;
+
+    }
+
+    function editarTarea(index) {
+
+
+        let contenido = `
+
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <form>
+                        <input type="text" class="form-control" value="${tareas[index].nombre}" id="inputEditarTarea">
+                        <button class="btn btn-success" data-id-tarea="${index}" id="confirmarEditarTarea">Editar tarea</button>
                     </form>
                 </div>
             </div>
@@ -109,8 +129,6 @@ let tareas = [];
     function indexControlador() {
 
         guardarLocalStorage();
-
-        console.log('TAREAS', tareas);
 
         app.innerHTML = mostrarIndex();
         
@@ -137,6 +155,21 @@ let tareas = [];
 
     }
 
+    function editarTareaControlador(index) {
+
+        app.innerHTML = editarTarea(index);
+
+    }
+
+    function confirmarEditarTareaControlador(index) {
+
+        let nuevoNombre = document.querySelector('#inputEditarTarea').value;
+        tareas[index].nombre = nuevoNombre;
+
+       indexControlador();
+
+    }
+
     function crearNuevaTareaControlador() {
 
         let inputNuevaTarea = document.querySelector('#inputNuevaTarea');
@@ -157,6 +190,8 @@ let tareas = [];
 
     }
 
+    // FUNCIONES
+
     function tareaTerminada(index) {
 
         tareas[index].terminada = estilosTareaTerminada(index, false);
@@ -166,30 +201,30 @@ let tareas = [];
 
     }
 
+    // @param index (integer) index de la tarea
+    // @param inicializar (boolean) inicializar a true si se recarga la página
     function estilosTareaTerminada(index, inicilizar) {
 
 
         let tr = document.getElementById(`tarea${index}`);
 
-        console.log(tr);
+        let checkbox = document.querySelector(`input[name="terminarTarea${index}"]`);
 
-
-        //  TODO
-        let activo = document.querySelector(`input[name="terminarTarea${index}"]`).checked; // Recuperar solo el checkbox
-
-        console.log(activo);
+        let activo = false;
 
         let tareaTexto = document.getElementById(`tareaTexto${index}`);
 
         
         if (inicilizar) {
-            activo = tareas[index].terminada; // Cambiar activo por otra variable para guardar el boolean
-            // Activar el checkbox
+            activo = tareas[index].terminada; 
+            checkbox.checked = activo ? true : false;
+        }else {
+            activo = checkbox.checked;
         }
 
-        tr.className = activo ? 'bg-success' : ''; // Cambiar activo por la otra variable
-        tareaTexto.style.textDecoration = activo ? 'line-through' : '';
-        tareaTexto.style.color = activo ? 'white' : '';
+        tr.className = activo ? 'bg-success' : ''; // Aplicamos fondo verde a la fila
+        tareaTexto.style.textDecoration = activo ? 'line-through' : ''; // Tachamos el nombre de la actividad
+        tareaTexto.style.color = activo ? 'white' : ''; // Cambiamos el color del texto por blanco
         
         return activo;
     }
@@ -226,6 +261,8 @@ let tareas = [];
         if (evt.target.matches('#addNuevaTarea')) nuevaTareaControlador();
         else if (evt.target.matches('#crearNuevaTarea')) crearNuevaTareaControlador();
         else if (evt.target.matches('#eliminarTarea')) eliminarTareaControlador(index);
+        else if (evt.target.matches('#editarTarea')) editarTareaControlador(index);
+        else if (evt.target.matches('#confirmarEditarTarea')) confirmarEditarTareaControlador(index);
         else if (evt.target.matches('#terminarTarea')) tareaTerminada(index);
 
 

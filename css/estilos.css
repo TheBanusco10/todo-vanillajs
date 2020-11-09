@@ -10,3 +10,29 @@ form input {
     margin: 2%;
 
 }
+
+footer {
+
+    margin-top: 3%;
+
+    background-color: rgb(41, 41, 41);
+
+    height: 120px;
+
+    color: white;
+
+    display: flex;
+    flex-wrap: wrap;
+
+    justify-content: center;
+    align-items: center;
+
+    flex-flow: column;
+
+}
+
+footer a {
+
+    margin-left: 10px;
+
+}
