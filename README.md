@@ -1,3 +1,5 @@
 # todo-vanillajs
 
-Desarrollado por David Jiménez Villarejo utilizando Bootstrap, Vanilla JS y LocalStorage.
+Basic ToDo App by David Jiménez Villarejo using Bootstrap, Vanilla JS and LocalStorage.
+
+[See the App here](https://thebanusco10.github.io/todo-vanillajs/)
